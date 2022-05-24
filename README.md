@@ -6,4 +6,5 @@ step 1 :
     ./build.sh
 
 step2 : 
+
     docker-compose up -d
