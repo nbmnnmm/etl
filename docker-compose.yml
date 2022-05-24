@@ -11,10 +11,10 @@ services:
       - "8080:8080"
       - "7077:7077"
     volumes:
-      - /home/b/code/python/etl.py:/etl.py:rw,z
-      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
-      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
-      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+      - ./etl.py:/etl.py:rw,z
+      - ./postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - "PATH TO DATA":/flights_2008_7M.csv:rw,z
+      - ./submit/submit1.sh:/submit.sh:rw,z
     environment:
       - INIT_DAEMON_STEP=setup_spark
     networks:
@@ -27,10 +27,10 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - /home/b/code/python/etl.py:/etl.py:rw,z
-      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
-      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
-      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+      - ./etl.py:/etl.py:rw,z
+      - ./postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - "PATH TO DATA" :/flights_2008_7M.csv:rw,z
+      - ./submit/submit1.sh:/submit.sh:rw,z
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
     networks:
@@ -43,10 +43,10 @@ services:
     ports:
       - "8082:8081"
     volumes:
-      - /home/b/code/python/etl.py:/etl.py:rw,z
-      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
-      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
-      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+      - ./etl.py:/etl.py:rw,z
+      - ./postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - "PATH TO DATA":/flights_2008_7M.csv:rw,z
+      - ./submit1.sh:/submit.sh:rw,z
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
     networks:
@@ -61,10 +61,10 @@ services:
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"   
     volumes:
-      - /home/b/code/python/etl.py:/etl.py:rw,z
-      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
-      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
-      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+      - ./etl.py:/etl.py:rw,z
+      - ./postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - "PATH TO DATA":/flights_2008_7M.csv:rw,z
+      - ./submit1.sh:/submit.sh:rw,z
     networks:
       - dathoc-spark-net  
   spark-history-server:
@@ -82,10 +82,10 @@ services:
     image: dathoc/spark-submit:latest
     container_name: spark-submit
     volumes:
-      - /home/b/code/python/etl.py:/etl.py:rw,z
-      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
-      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
-      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+      - ./etl.py:/etl.py:rw,z
+      - ./postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - "PATH TO DATA":/flights_2008_7M.csv:rw,z
+      - ./submit1.sh:/submit.sh:rw,z
     depends_on:
       - spark-master
     environment:
