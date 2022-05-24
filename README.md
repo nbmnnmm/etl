@@ -8,3 +8,8 @@ step 1 :
 step2 : 
 
     docker-compose up -d
+    
+result 
+
+![image](https://user-images.githubusercontent.com/83798953/169947582-6e0bb01c-4358-494c-886f-ffc0aae4847d.png)
+
