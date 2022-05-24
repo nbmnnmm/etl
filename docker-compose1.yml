@@ -1,0 +1,94 @@
+version: '3'
+networks:
+  dathoc-spark-net:
+    external:
+      name: dathoc-spark-net
+services:
+  spark-master:
+    image: dathoc/spark-master:latest
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - /home/b/code/python/etl.py:/etl.py:rw,z
+      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
+      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+    networks:
+      - dathoc-spark-net  
+  spark-worker-1:
+    image: dathoc/spark-worker:latest
+    container_name: spark-worker-1
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    volumes:
+      - /home/b/code/python/etl.py:/etl.py:rw,z
+      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
+      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+    networks:
+      - dathoc-spark-net  
+  spark-worker-2:
+    image: dathoc/spark-worker:latest
+    container_name: spark-worker-2
+    depends_on:
+      - spark-master
+    ports:
+      - "8082:8081"
+    volumes:
+      - /home/b/code/python/etl.py:/etl.py:rw,z
+      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
+      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+    networks:
+      - dathoc-spark-net  
+  spark-worker-3:
+    image: dathoc/spark-worker:latest
+    container_name: spark-worker-3
+    depends_on:
+      - spark-master
+    ports:
+      - "8083:8081"
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"   
+    volumes:
+      - /home/b/code/python/etl.py:/etl.py:rw,z
+      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
+      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+    networks:
+      - dathoc-spark-net  
+  spark-history-server:
+    image: dathoc/spark-history-server:latest
+    container_name: spark-history-server
+    depends_on:
+      - spark-master
+    ports:
+      - "18081:18081"
+    volumes:
+      - /tmp/spark-events-local:/tmp/spark-events
+    networks:
+      - dathoc-spark-net
+  spark-submit:
+    image: dathoc/spark-submit:latest
+    container_name: spark-submit
+    volumes:
+      - /home/b/code/python/etl.py:/etl.py:rw,z
+      - /home/b/postgresql-42.3.5.jar:/postgresql-42.3.5.jar:rw,z
+      - /home/b/code/python/flights_2008_7M.csv:/flights_2008_7M.csv:rw,z
+      - /home/b/dathoc-spark/submit/submit1.sh:/submit.sh:rw,z
+    depends_on:
+      - spark-master
+    environment:
+      - INIT_DAEMON_STEP=setup_spark
+    networks:
+      - dathoc-spark-net 
